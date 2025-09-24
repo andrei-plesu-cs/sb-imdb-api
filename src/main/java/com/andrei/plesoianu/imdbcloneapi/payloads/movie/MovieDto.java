@@ -4,6 +4,7 @@ import com.andrei.plesoianu.imdbcloneapi.enums.MovieType;
 import com.andrei.plesoianu.imdbcloneapi.payloads.character.CharacterDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.contributor.ContributorDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.genre.GenreDto;
+import com.andrei.plesoianu.imdbcloneapi.payloads.season.SeasonDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,10 @@ public class MovieDto {
     private String ageRestriction;
     private LocalDate releaseDate;
     private MovieType type;
+    private Double rating;
+    private Double rottenTomatoesRating;
     private List<CharacterDto> characters = new ArrayList<>();
     private List<ContributorDto> contributors = new ArrayList<>();
     private List<GenreDto> genres = new ArrayList<>();
+    private List<SeasonDto> seasons = new ArrayList<>();
 }

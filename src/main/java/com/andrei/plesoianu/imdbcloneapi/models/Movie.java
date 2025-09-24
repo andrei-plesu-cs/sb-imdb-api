@@ -3,6 +3,7 @@ package com.andrei.plesoianu.imdbcloneapi.models;
 import com.andrei.plesoianu.imdbcloneapi.enums.MovieType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -48,6 +49,12 @@ public class Movie {
 
     private LocalDate releaseDate;
 
+    @Positive
+    private Double rating;
+
+    @Positive
+    private Double rottenTomatoesRating;
+
     @OneToMany(mappedBy = "movie", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<Character> characters = new ArrayList<>();
 
@@ -61,6 +68,9 @@ public class Movie {
     @OneToMany(mappedBy = "movie", orphanRemoval = true)
     @ToString.Exclude
     private List<News> news = new ArrayList<>();
+
+    @OneToMany(mappedBy = "movie", orphanRemoval = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private List<Season> seasons = new ArrayList<>();
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "movie_genres",

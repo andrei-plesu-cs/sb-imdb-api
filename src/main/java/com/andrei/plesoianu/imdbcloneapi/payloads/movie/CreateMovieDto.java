@@ -2,6 +2,7 @@ package com.andrei.plesoianu.imdbcloneapi.payloads.movie;
 
 import com.andrei.plesoianu.imdbcloneapi.enums.MovieType;
 import com.andrei.plesoianu.imdbcloneapi.payloads.genre.GenreDto;
+import com.andrei.plesoianu.imdbcloneapi.payloads.season.CreateSeasonDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,4 +33,6 @@ public class CreateMovieDto {
     private LocalDate releaseDate;
 
     private List<GenreDto> genres;
+
+    private List<CreateSeasonDto> seasons;
 }

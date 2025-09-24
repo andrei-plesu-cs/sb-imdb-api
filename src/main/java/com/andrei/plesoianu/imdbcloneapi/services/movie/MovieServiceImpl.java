@@ -50,6 +50,8 @@ public class MovieServiceImpl implements MovieService {
     public MovieDto addMovie(CreateMovieDto dto) {
         if (dto.getType() == MovieType.MOVIE && dto.getReleaseDate() == null) {
             throw new ApiException("Movies must have a release date");
+        } else if (dto.getType() == MovieType.SERIES && (dto.getSeasons() == null || dto.getSeasons().isEmpty())) {
+            throw new ApiException("A series must have at least one season");
         }
 
         var movie = modelMapper.map(dto, Movie.class);
