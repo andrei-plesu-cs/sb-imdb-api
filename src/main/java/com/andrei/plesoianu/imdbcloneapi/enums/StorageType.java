@@ -10,7 +10,6 @@ public enum StorageType {
             case PERSON -> "person";
             case NEWS -> "news";
             case MOVIE -> "movie";
-            default -> throw new IllegalStateException("Unknown storage type: " + this.name());
         };
     }
 }

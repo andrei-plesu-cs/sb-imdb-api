@@ -27,8 +27,4 @@ public class NotFoundException extends RuntimeException {
         this.resource = resource;
         this.resourceId = resourceName;
     }
-
-    public NotFoundException(@NonNull Class<?> resource, String resourceName) {
-        this(resource.getSimpleName(), resourceName);
-    }
 }
