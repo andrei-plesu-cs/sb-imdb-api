@@ -4,6 +4,10 @@ import com.andrei.plesoianu.imdbcloneapi.payloads.genre.CreateGenreDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.genre.GenreDto;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 public interface GenreService {
     GenreDto addGenre(@Valid CreateGenreDto dto);
+
+    List<GenreDto> getAllGenres();
 }

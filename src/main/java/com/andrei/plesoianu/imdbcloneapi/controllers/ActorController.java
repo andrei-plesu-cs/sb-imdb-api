@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/actors")
 public class ActorController {
@@ -17,6 +19,11 @@ public class ActorController {
 
     public ActorController(@NonNull ActorService actorService) {
         this.actorService = actorService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ActorDto>> getAllActors() {
+        return ResponseEntity.ok(actorService.getAllActors());
     }
 
     @GetMapping("/{actorId}")

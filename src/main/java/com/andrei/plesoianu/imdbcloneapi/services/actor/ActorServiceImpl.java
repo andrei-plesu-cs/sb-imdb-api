@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class ActorServiceImpl implements ActorService {
@@ -56,5 +57,12 @@ public class ActorServiceImpl implements ActorService {
                 .orElseThrow(() -> new NotFoundException(Actor.class, actorId));
 
         return modelMapper.map(actor, ActorDto.class);
+    }
+
+    @Override
+    public List<ActorDto> getAllActors() {
+        return actorRepository.findAll().stream()
+                .map(actor -> modelMapper.map(actor, ActorDto.class))
+                .toList();
     }
 }

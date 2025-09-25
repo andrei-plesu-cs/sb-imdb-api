@@ -9,6 +9,8 @@ import lombok.NonNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GenreServiceImpl implements GenreService {
     private final GenresRepository genresRepository;
@@ -28,5 +30,12 @@ public class GenreServiceImpl implements GenreService {
 
         var genre = modelMapper.map(dto, Genre.class);
         return modelMapper.map(genresRepository.save(genre), GenreDto.class);
+    }
+
+    @Override
+    public List<GenreDto> getAllGenres() {
+        return genresRepository.findAll().stream()
+                .map(genre -> modelMapper.map(genre, GenreDto.class))
+                .toList();
     }
 }

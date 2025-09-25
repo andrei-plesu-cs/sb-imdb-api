@@ -6,10 +6,9 @@ import com.andrei.plesoianu.imdbcloneapi.services.genre.GenreService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/genres")
@@ -18,6 +17,11 @@ public class GenreController {
 
     public GenreController(GenreService genreService) {
         this.genreService = genreService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<GenreDto>> getAllGenres() {
+        return ResponseEntity.ok(genreService.getAllGenres());
     }
 
     @PostMapping
