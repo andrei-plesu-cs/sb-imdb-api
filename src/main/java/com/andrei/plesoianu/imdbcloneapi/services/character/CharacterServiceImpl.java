@@ -1,12 +1,12 @@
 package com.andrei.plesoianu.imdbcloneapi.services.character;
 
 import com.andrei.plesoianu.imdbcloneapi.exceptions.NotFoundException;
-import com.andrei.plesoianu.imdbcloneapi.models.Actor;
 import com.andrei.plesoianu.imdbcloneapi.models.Character;
 import com.andrei.plesoianu.imdbcloneapi.models.Movie;
+import com.andrei.plesoianu.imdbcloneapi.models.Person;
 import com.andrei.plesoianu.imdbcloneapi.payloads.character.CharacterDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.character.CreateCharacterDto;
-import com.andrei.plesoianu.imdbcloneapi.repositories.ActorRepository;
+import com.andrei.plesoianu.imdbcloneapi.repositories.PersonRepository;
 import com.andrei.plesoianu.imdbcloneapi.repositories.CharacterRepository;
 import com.andrei.plesoianu.imdbcloneapi.repositories.MovieRepository;
 import lombok.NonNull;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CharacterServiceImpl implements CharacterService {
-    private final ActorRepository actorRepository;
+    private final PersonRepository actorRepository;
     private final CharacterRepository characterRepository;
     private final ModelMapper modelMapper;
     private final MovieRepository movieRepository;
 
-    public CharacterServiceImpl(@NonNull ActorRepository actorRepository,
+    public CharacterServiceImpl(@NonNull PersonRepository actorRepository,
                                 @NonNull CharacterRepository characterRepository,
                                 @NonNull ModelMapper modelMapper, MovieRepository movieRepository) {
         this.actorRepository = actorRepository;
@@ -31,8 +31,8 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterDto addCharacter(CreateCharacterDto dto) {
-        Actor actor = actorRepository.findById(dto.getActorId())
-                .orElseThrow(() -> new NotFoundException(Actor.class, dto.getActorId()));
+        Person actor = actorRepository.findById(dto.getActorId())
+                .orElseThrow(() -> new NotFoundException(Person.class, dto.getActorId()));
 
         Movie movie = movieRepository.findById(dto.getMovieId())
                 .orElseThrow(() -> new NotFoundException(Movie.class, dto.getMovieId()));

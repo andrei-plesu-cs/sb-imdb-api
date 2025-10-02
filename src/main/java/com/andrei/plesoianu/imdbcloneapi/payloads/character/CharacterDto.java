@@ -1,6 +1,6 @@
 package com.andrei.plesoianu.imdbcloneapi.payloads.character;
 
-import com.andrei.plesoianu.imdbcloneapi.payloads.actor.ActorDto;
+import com.andrei.plesoianu.imdbcloneapi.payloads.person.PersonDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class CharacterDto {
     private Long id;
     private String name;
-    private ActorDto actor;
+    private PersonDto actor;
 }

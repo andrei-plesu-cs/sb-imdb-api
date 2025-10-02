@@ -1,6 +1,8 @@
-package com.andrei.plesoianu.imdbcloneapi.payloads.base;
+package com.andrei.plesoianu.imdbcloneapi.payloads.person;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter

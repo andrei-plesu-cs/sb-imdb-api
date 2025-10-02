@@ -24,7 +24,7 @@ public class Character {
     @ManyToOne
     @JoinColumn(name = "actor_id")
     @ToString.Exclude
-    private Actor actor;
+    private Person actor;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")

@@ -14,4 +14,6 @@ public interface MovieService {
     MovieDto updatePoster(Long movieId, MultipartFile file);
 
     List<CompactMovieDto> getRecentMovies();
+
+    List<CompactMovieDto> getCompactMovies();
 }

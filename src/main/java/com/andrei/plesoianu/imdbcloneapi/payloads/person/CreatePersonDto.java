@@ -1,4 +1,4 @@
-package com.andrei.plesoianu.imdbcloneapi.payloads.base;
+package com.andrei.plesoianu.imdbcloneapi.payloads.person;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

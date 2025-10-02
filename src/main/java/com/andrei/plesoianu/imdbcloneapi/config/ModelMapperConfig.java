@@ -1,10 +1,10 @@
 package com.andrei.plesoianu.imdbcloneapi.config;
 
 import com.andrei.plesoianu.imdbcloneapi.enums.StorageType;
-import com.andrei.plesoianu.imdbcloneapi.models.Actor;
 import com.andrei.plesoianu.imdbcloneapi.models.Movie;
 import com.andrei.plesoianu.imdbcloneapi.models.News;
-import com.andrei.plesoianu.imdbcloneapi.payloads.actor.ActorDto;
+import com.andrei.plesoianu.imdbcloneapi.models.Person;
+import com.andrei.plesoianu.imdbcloneapi.payloads.person.PersonDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.character.CharacterDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CompactMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.MovieDto;
@@ -23,11 +23,11 @@ public class ModelMapperConfig {
     ModelMapper modelMapper() {
         var mapper = new ModelMapper();
 
-        mapper.createTypeMap(Actor.class, ActorDto.class)
-                .addMappings(m -> m.skip(ActorDto::setProfileImageUrl))
+        mapper.createTypeMap(Person.class, PersonDto.class)
+                .addMappings(m -> m.skip(PersonDto::setProfileImageUrl))
                 .setPostConverter(context -> {
-                    Actor source = context.getSource();
-                    ActorDto destination = context.getDestination();
+                    Person source = context.getSource();
+                    PersonDto destination = context.getDestination();
 
                     if (source.getProfileImageUrl() != null) {
                         destination.setProfileImageUrl(
@@ -61,7 +61,7 @@ public class ModelMapperConfig {
                     destination.setCharacters(source.getCharacters().stream()
                             .map(character -> {
                                 var dto = mapper.map(character, CharacterDto.class);
-                                dto.setActor(mapper.map(character.getActor(), ActorDto.class));
+                                dto.setActor(mapper.map(character.getActor(), PersonDto.class));
                                 return dto;
                             })
                             .toList());

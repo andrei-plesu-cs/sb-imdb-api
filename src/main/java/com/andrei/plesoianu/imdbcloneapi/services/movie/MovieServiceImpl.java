@@ -86,4 +86,11 @@ public class MovieServiceImpl implements MovieService {
                 .map(movie -> modelMapper.map(movie, CompactMovieDto.class))
                 .toList();
     }
+
+    @Override
+    public List<CompactMovieDto> getCompactMovies() {
+        return movieRepository.findAll().stream()
+                .map(movie -> modelMapper.map(movie, CompactMovieDto.class))
+                .toList();
+    }
 }

@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CompactMovieDto {
     private Long id;
+    private String title;
     private String posterUrl;
 }

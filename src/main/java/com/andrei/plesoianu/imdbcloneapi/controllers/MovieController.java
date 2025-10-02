@@ -1,8 +1,11 @@
 package com.andrei.plesoianu.imdbcloneapi.controllers;
 
+import com.andrei.plesoianu.imdbcloneapi.payloads.contributor.ContributorDto;
+import com.andrei.plesoianu.imdbcloneapi.payloads.contributor.CreateContributorDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CompactMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CreateMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.MovieDto;
+import com.andrei.plesoianu.imdbcloneapi.services.contributor.ContributorService;
 import com.andrei.plesoianu.imdbcloneapi.services.movie.MovieService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
@@ -17,14 +20,22 @@ import java.util.List;
 @RequestMapping("/api/movies")
 public class MovieController {
     private final MovieService movieService;
+    private final ContributorService contributorService;
 
-    public MovieController(@NonNull MovieService movieService) {
+    public MovieController(@NonNull MovieService movieService,
+                           @NonNull ContributorService contributorService) {
         this.movieService = movieService;
+        this.contributorService = contributorService;
     }
 
     @GetMapping("/recent")
     public ResponseEntity<List<CompactMovieDto>> getRecentMovies() {
         return ResponseEntity.ok(movieService.getRecentMovies());
+    }
+
+    @GetMapping("/compact")
+    public ResponseEntity<List<CompactMovieDto>> getCompactMovies() {
+        return ResponseEntity.ok(movieService.getCompactMovies());
     }
 
     @GetMapping("/{movieId}")
@@ -35,6 +46,13 @@ public class MovieController {
     @PostMapping()
     public ResponseEntity<MovieDto> addMovie(@Valid @RequestBody CreateMovieDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(movieService.addMovie(dto));
+    }
+
+    @PostMapping("/contributor/{movieId}")
+    public ResponseEntity<ContributorDto> createContributor(
+            @PathVariable Long movieId,
+            @Valid @RequestBody CreateContributorDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(contributorService.addContributor(movieId, dto));
     }
 
     @PutMapping("/image/{movieId}")
