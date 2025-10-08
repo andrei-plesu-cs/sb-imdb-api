@@ -5,6 +5,7 @@ import com.andrei.plesoianu.imdbcloneapi.payloads.contributor.CreateContributorD
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CompactMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CreateMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.MovieDto;
+import com.andrei.plesoianu.imdbcloneapi.payloads.movie.ParseUrlDto;
 import com.andrei.plesoianu.imdbcloneapi.services.contributor.ContributorService;
 import com.andrei.plesoianu.imdbcloneapi.services.movie.MovieService;
 import jakarta.validation.Valid;
@@ -58,5 +59,11 @@ public class MovieController {
     @PutMapping("/image/{movieId}")
     public ResponseEntity<MovieDto> updatePoster(@PathVariable Long movieId, @RequestParam("file") MultipartFile file) {
         return ResponseEntity.ok(movieService.updatePoster(movieId, file));
+    }
+
+    @PostMapping("/parse-url")
+    public ResponseEntity<?> parseUrl(@Valid @RequestBody ParseUrlDto dto) {
+        movieService.parseUrl(dto.getUrl());
+        return ResponseEntity.noContent().build();
     }
 }

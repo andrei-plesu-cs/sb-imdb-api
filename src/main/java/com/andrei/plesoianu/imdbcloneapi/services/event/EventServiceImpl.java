@@ -4,6 +4,7 @@ import com.andrei.plesoianu.imdbcloneapi.models.Event;
 import com.andrei.plesoianu.imdbcloneapi.payloads.event.CreateEventDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.event.EventDto;
 import com.andrei.plesoianu.imdbcloneapi.repositories.EventRepository;
+import com.andrei.plesoianu.imdbcloneapi.security.AuthUtil;
 import lombok.NonNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,14 @@ import java.util.List;
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
+    private final AuthUtil authUtil;
 
     public EventServiceImpl(@NonNull EventRepository eventRepository,
-                            @NonNull ModelMapper modelMapper) {
+                            @NonNull ModelMapper modelMapper,
+                            @NonNull AuthUtil authUtil) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
+        this.authUtil = authUtil;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class EventServiceImpl implements EventService {
     public EventDto createEvent(CreateEventDto dto) {
         var event = new Event();
         event.setTitle(dto.getTitle());
-        event.setUserId(dto.getUserId());
+        event.setUser(authUtil.loggedInUser());
 
         return modelMapper.map(eventRepository.save(event), EventDto.class);
     }

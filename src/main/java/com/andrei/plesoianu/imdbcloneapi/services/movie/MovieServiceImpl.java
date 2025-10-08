@@ -6,12 +6,14 @@ import com.andrei.plesoianu.imdbcloneapi.exceptions.ApiException;
 import com.andrei.plesoianu.imdbcloneapi.exceptions.NotFoundException;
 import com.andrei.plesoianu.imdbcloneapi.models.Genre;
 import com.andrei.plesoianu.imdbcloneapi.models.Movie;
+import com.andrei.plesoianu.imdbcloneapi.payloads.event.CreateEventDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.genre.GenreDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CompactMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CreateMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.MovieDto;
 import com.andrei.plesoianu.imdbcloneapi.repositories.GenresRepository;
 import com.andrei.plesoianu.imdbcloneapi.repositories.MovieRepository;
+import com.andrei.plesoianu.imdbcloneapi.services.event.EventService;
 import com.andrei.plesoianu.imdbcloneapi.services.storage.StorageService;
 import lombok.NonNull;
 import org.modelmapper.ModelMapper;
@@ -27,15 +29,18 @@ public class MovieServiceImpl implements MovieService {
     private final ModelMapper modelMapper;
     private final StorageService storageService;
     private final GenresRepository genresRepository;
+    private final EventService eventService;
 
     public MovieServiceImpl(@NonNull MovieRepository movieRepository,
                             @NonNull ModelMapper modelMapper,
                             @NonNull StorageService storageService,
-                            @NonNull GenresRepository genresRepository) {
+                            @NonNull GenresRepository genresRepository,
+                            @NonNull EventService eventService) {
         this.movieRepository = movieRepository;
         this.modelMapper = modelMapper;
         this.storageService = storageService;
         this.genresRepository = genresRepository;
+        this.eventService = eventService;
     }
 
     @Override
@@ -92,5 +97,10 @@ public class MovieServiceImpl implements MovieService {
         return movieRepository.findAll().stream()
                 .map(movie -> modelMapper.map(movie, CompactMovieDto.class))
                 .toList();
+    }
+
+    @Override
+    public void parseUrl(String url) {
+        eventService.createEvent(new CreateEventDto("Parse url " + url));
     }
 }

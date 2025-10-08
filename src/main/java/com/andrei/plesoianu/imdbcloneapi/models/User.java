@@ -9,7 +9,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -44,4 +46,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @ToString.Exclude
+    private List<Event> events = new ArrayList<>();
 }

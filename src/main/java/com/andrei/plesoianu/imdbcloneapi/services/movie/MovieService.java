@@ -16,4 +16,6 @@ public interface MovieService {
     List<CompactMovieDto> getRecentMovies();
 
     List<CompactMovieDto> getCompactMovies();
+
+    void parseUrl(String url);
 }

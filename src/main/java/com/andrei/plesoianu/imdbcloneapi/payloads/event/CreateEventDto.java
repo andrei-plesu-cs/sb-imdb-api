@@ -11,6 +11,4 @@ import lombok.NoArgsConstructor;
 public class CreateEventDto {
     @NotNull
     private String title;
-
-    private Long userId;
 }
