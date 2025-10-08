@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("commons-io:commons-io:2.20.0")
     implementation("org.modelmapper:modelmapper:3.2.4")
+    implementation("com.corundumstudio.socketio:netty-socketio:2.0.13")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")
