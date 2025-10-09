@@ -33,6 +33,7 @@ dependencies {
     implementation("org.modelmapper:modelmapper:3.2.4")
     implementation("com.corundumstudio.socketio:netty-socketio:2.0.13")
     implementation("io.jsonwebtoken:jjwt-api:0.13.0")
+    implementation("org.jsoup:jsoup:1.21.2")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0")

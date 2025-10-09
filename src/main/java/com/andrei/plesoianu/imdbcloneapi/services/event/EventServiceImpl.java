@@ -1,5 +1,7 @@
 package com.andrei.plesoianu.imdbcloneapi.services.event;
 
+import com.andrei.plesoianu.imdbcloneapi.enums.JobStatus;
+import com.andrei.plesoianu.imdbcloneapi.exceptions.NotFoundException;
 import com.andrei.plesoianu.imdbcloneapi.models.Event;
 import com.andrei.plesoianu.imdbcloneapi.payloads.event.CreateEventDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.event.EventDto;
@@ -38,6 +40,15 @@ public class EventServiceImpl implements EventService {
         event.setTitle(dto.getTitle());
         event.setUser(authUtil.loggedInUser());
 
+        return modelMapper.map(eventRepository.save(event), EventDto.class);
+    }
+
+    @Override
+    public EventDto markEventSuccessful(Long eventId) {
+        var event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException(Event.class, eventId));
+
+        event.setStatus(JobStatus.COMPLETED);
         return modelMapper.map(eventRepository.save(event), EventDto.class);
     }
 }

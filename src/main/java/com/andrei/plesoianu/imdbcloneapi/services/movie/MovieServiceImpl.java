@@ -7,14 +7,18 @@ import com.andrei.plesoianu.imdbcloneapi.exceptions.NotFoundException;
 import com.andrei.plesoianu.imdbcloneapi.models.Genre;
 import com.andrei.plesoianu.imdbcloneapi.models.Movie;
 import com.andrei.plesoianu.imdbcloneapi.payloads.event.CreateEventDto;
+import com.andrei.plesoianu.imdbcloneapi.payloads.event.EventDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.genre.GenreDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CompactMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CreateMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.MovieDto;
 import com.andrei.plesoianu.imdbcloneapi.repositories.GenresRepository;
 import com.andrei.plesoianu.imdbcloneapi.repositories.MovieRepository;
+import com.andrei.plesoianu.imdbcloneapi.security.AuthUtil;
 import com.andrei.plesoianu.imdbcloneapi.services.event.EventService;
+import com.andrei.plesoianu.imdbcloneapi.services.parser.ParserService;
 import com.andrei.plesoianu.imdbcloneapi.services.storage.StorageService;
+import com.andrei.plesoianu.imdbcloneapi.socketio.SocketIoSessionManager;
 import lombok.NonNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -30,17 +35,26 @@ public class MovieServiceImpl implements MovieService {
     private final StorageService storageService;
     private final GenresRepository genresRepository;
     private final EventService eventService;
+    private final ParserService parserService;
+    private final SocketIoSessionManager sessionManager;
+    private final AuthUtil authUtil;
 
     public MovieServiceImpl(@NonNull MovieRepository movieRepository,
                             @NonNull ModelMapper modelMapper,
                             @NonNull StorageService storageService,
                             @NonNull GenresRepository genresRepository,
-                            @NonNull EventService eventService) {
+                            @NonNull EventService eventService,
+                            @NonNull ParserService parserService,
+                            @NonNull SocketIoSessionManager sessionManager,
+                            @NonNull AuthUtil authUtil) {
         this.movieRepository = movieRepository;
         this.modelMapper = modelMapper;
         this.storageService = storageService;
         this.genresRepository = genresRepository;
         this.eventService = eventService;
+        this.parserService = parserService;
+        this.sessionManager = sessionManager;
+        this.authUtil = authUtil;
     }
 
     @Override
@@ -100,7 +114,24 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void parseUrl(String url) {
-        eventService.createEvent(new CreateEventDto("Parse url " + url));
+    public EventDto parseUrl(String url) {
+        var createdEvent = eventService.createEvent(new CreateEventDto("Parse movie url " + url));
+        var service = Executors.newSingleThreadExecutor();
+        try {
+            service.submit(() -> {
+                try {
+                    parserService.parseMovieUrl(url);
+                    var userId = authUtil.loggedInUser().getId();
+                    try {
+                        var session = sessionManager.getSession(userId);
+                        eventService.markEventSuccessful(createdEvent.getId());
+                        session.sendEvent("job_completed", createdEvent.getId());
+                    } catch (NullPointerException ignored) {}
+                } catch (IOException ignored) {}
+            });
+        } finally {
+            service.shutdown();
+        }
+        return createdEvent;
     }
 }

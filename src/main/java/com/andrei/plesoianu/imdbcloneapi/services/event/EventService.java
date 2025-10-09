@@ -8,4 +8,5 @@ import java.util.List;
 public interface EventService {
     List<EventDto> getEvents();
     EventDto createEvent(CreateEventDto dto);
+    EventDto markEventSuccessful(Long eventId);
 }

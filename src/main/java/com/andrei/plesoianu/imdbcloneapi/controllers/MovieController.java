@@ -2,6 +2,7 @@ package com.andrei.plesoianu.imdbcloneapi.controllers;
 
 import com.andrei.plesoianu.imdbcloneapi.payloads.contributor.ContributorDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.contributor.CreateContributorDto;
+import com.andrei.plesoianu.imdbcloneapi.payloads.event.EventDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CompactMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CreateMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.MovieDto;
@@ -62,8 +63,9 @@ public class MovieController {
     }
 
     @PostMapping("/parse-url")
-    public ResponseEntity<?> parseUrl(@Valid @RequestBody ParseUrlDto dto) {
+    public ResponseEntity<EventDto> parseUrl(@Valid @RequestBody ParseUrlDto dto) {
         movieService.parseUrl(dto.getUrl());
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(movieService.parseUrl(dto.getUrl()));
+
     }
 }

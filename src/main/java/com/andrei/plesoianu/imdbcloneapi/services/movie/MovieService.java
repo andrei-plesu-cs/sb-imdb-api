@@ -1,5 +1,6 @@
 package com.andrei.plesoianu.imdbcloneapi.services.movie;
 
+import com.andrei.plesoianu.imdbcloneapi.payloads.event.EventDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CompactMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.CreateMovieDto;
 import com.andrei.plesoianu.imdbcloneapi.payloads.movie.MovieDto;
@@ -17,5 +18,5 @@ public interface MovieService {
 
     List<CompactMovieDto> getCompactMovies();
 
-    void parseUrl(String url);
+    EventDto parseUrl(String url);
 }
