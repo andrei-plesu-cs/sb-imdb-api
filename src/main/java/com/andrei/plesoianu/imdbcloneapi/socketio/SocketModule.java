@@ -1,11 +1,11 @@
 package com.andrei.plesoianu.imdbcloneapi.socketio;
 
-import com.andrei.plesoianu.imdbcloneapi.enums.MessageType;
 import com.andrei.plesoianu.imdbcloneapi.payloads.socketio.MessageDto;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
+import jakarta.annotation.PreDestroy;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -36,10 +36,17 @@ public class SocketModule {
 
     private DataListener<MessageDto> onChatReceived() {
         return (senderClient, data, ackSender) -> {
-            if (data.getType() == MessageType.AUTH) {
-                sessionManager.addSession(Long.valueOf(data.getMessage()), senderClient);
+            System.out.format("Client message [%s]%n", senderClient.getSessionId().toString());
+            switch (data.getType()) {
+                case AUTH_REGISTER -> sessionManager.addSession(Long.valueOf(data.getMessage()), senderClient);
+                case AUTH_DEREGISTER -> sessionManager.removeSessionBySocket(senderClient);
+                default -> throw new IllegalStateException("Unexpected value: " + data.getType());
             }
-            senderClient.getNamespace().getBroadcastOperations().sendEvent("get_message", data.getMessage());
         };
+    }
+
+    @PreDestroy
+    public void destroy() {
+        socketIOServer.stop();
     }
 }

@@ -1,5 +1,6 @@
 package com.andrei.plesoianu.imdbcloneapi.enums;
 
 public enum MessageType {
-    AUTH
+    AUTH_REGISTER,
+    AUTH_DEREGISTER,
 }

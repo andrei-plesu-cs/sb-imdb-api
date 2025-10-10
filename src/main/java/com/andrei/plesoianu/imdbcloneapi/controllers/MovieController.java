@@ -64,8 +64,6 @@ public class MovieController {
 
     @PostMapping("/parse-url")
     public ResponseEntity<EventDto> parseUrl(@Valid @RequestBody ParseUrlDto dto) {
-        movieService.parseUrl(dto.getUrl());
         return ResponseEntity.ok(movieService.parseUrl(dto.getUrl()));
-
     }
 }

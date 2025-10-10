@@ -12,7 +12,10 @@ public class SocketIoSessionManager {
     private final Map<SocketIOClient, Long> reverseSessions = new HashMap<>();
 
     public synchronized void addSession(Long userId, SocketIOClient client) {
-        sessions.put(userId, client);
+        var existingClient = sessions.put(userId, client);
+        if (existingClient != null) {
+            reverseSessions.remove(existingClient);
+        }
         reverseSessions.put(client, userId);
     }
 
